@@ -77,7 +77,7 @@
         v &= vbNewLine & My.Application.Info.Description
         v &= vbNewLine & My.Application.Info.CompanyName
 
-        MsgBox("Windows Spotlight Extractor" & vbNewLine & v, MsgBoxStyle.Information, "About")
+        MsgBox(v, MsgBoxStyle.Information, "About")
     End Sub
 
     Private Sub List_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles List.MouseClick
