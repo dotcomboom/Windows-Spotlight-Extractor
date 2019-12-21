@@ -2,22 +2,49 @@
 
     Public path = System.Environment.ExpandEnvironmentVariables("%USERPROFILE%\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets\")
 
+    Private Sub updateConfig()
+        Filenames.Checked = My.Settings.Filenames
+        If My.Settings.Filenames Then
+            For Each item As ListViewItem In List.Items
+                If item.Text.Length = 0 Then
+                    item.Text = item.Tag.Replace(path, "")
+                End If
+            Next
+        Else
+            For Each item As ListViewItem In List.Items
+                item.Text = ""
+            Next
+        End If
+    End Sub
+
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.Text = My.Application.Info.AssemblyName
+        Me.Text &= " " & My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor
+        If My.Application.Info.Version.Build > 0 Then
+            Me.Text &= "." & My.Application.Info.Version.Build
+        End If
+        If My.Application.Info.Version.Revision > 0 Then
+            Me.Text &= "." & My.Application.Info.Version.Revision
+        End If
         For Each file In My.Computer.FileSystem.GetFiles(path)
-            'MsgBox(file)
             Dim bmp As System.Drawing.Bitmap = System.Drawing.Bitmap.FromFile(file)
             If bmp.Width > 620 And bmp.Height > 620 Then ' app tiles: 300
                 ' some twitter logo idk: 620
                 Img.Images.Add(file.Replace(path, ""), System.Drawing.Bitmap.FromFile(file))
-                List.Items.Add(file.Replace(path, ""), file.Replace(path, ""))
+                Dim item As New ListViewItem
+                item.Text = file.Replace(path, "")
+                item.Tag = file
+                item.ImageKey = file.Replace(path, "")
+                List.Items.Add(item)
             End If
         Next
+        updateConfig()
     End Sub
 
     Private Sub MenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Extract.Click
         If Browser.ShowDialog = Windows.Forms.DialogResult.OK Then
             For Each file As ListViewItem In List.SelectedItems
-                My.Computer.FileSystem.CopyFile(path & file.Text, Browser.SelectedPath & "\" & System.IO.Path.GetFileNameWithoutExtension(path & file.Text) & ".jpg")
+                My.Computer.FileSystem.CopyFile(file.Tag, Browser.SelectedPath & "\" & System.IO.Path.GetFileNameWithoutExtension(path & file.Text) & ".jpg")
             Next
         End If
     End Sub
@@ -39,16 +66,18 @@
     End Sub
 
     Private Sub About_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles About.Click
-        Dim v = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor
+        Dim v = My.Application.Info.AssemblyName
+        v &= vbNewLine & My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor
         If My.Application.Info.Version.Build > 0 Then
             v &= "." & My.Application.Info.Version.Build
         End If
         If My.Application.Info.Version.Revision > 0 Then
             v &= "." & My.Application.Info.Version.Revision
         End If
-        v &= " " & My.Application.Info.Description
+        v &= vbNewLine & My.Application.Info.Description
+        v &= vbNewLine & My.Application.Info.CompanyName
 
-        MsgBox("Windows Spotlight Extractor" & vbNewLine & v & vbNewLine & "dotcomboom", MsgBoxStyle.Information, "About")
+        MsgBox("Windows Spotlight Extractor" & vbNewLine & v, MsgBoxStyle.Information, "About")
     End Sub
 
     Private Sub List_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles List.MouseClick
@@ -64,5 +93,10 @@
 
     Private Sub ExitApplication_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitApplication.Click
         Application.Exit()
+    End Sub
+
+    Private Sub Filenames_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Filenames.Click
+        My.Settings.Filenames = Not My.Settings.Filenames
+        updateConfig()
     End Sub
 End Class

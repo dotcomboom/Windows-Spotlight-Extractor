@@ -31,6 +31,8 @@ Partial Class Main
         Me.Extract = New System.Windows.Forms.MenuItem
         Me.FileSep = New System.Windows.Forms.MenuItem
         Me.ExitApplication = New System.Windows.Forms.MenuItem
+        Me.ViewMnu = New System.Windows.Forms.MenuItem
+        Me.Filenames = New System.Windows.Forms.MenuItem
         Me.HelpMnu = New System.Windows.Forms.MenuItem
         Me.About = New System.Windows.Forms.MenuItem
         Me.Browser = New System.Windows.Forms.FolderBrowserDialog
@@ -41,13 +43,13 @@ Partial Class Main
         '
         'Img
         '
-        Me.Img.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
-        Me.Img.ImageSize = New System.Drawing.Size(16, 16)
+        Me.Img.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit
+        Me.Img.ImageSize = New System.Drawing.Size(200, 150)
         Me.Img.TransparentColor = System.Drawing.Color.Transparent
         '
         'Mnu
         '
-        Me.Mnu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.FileMnu, Me.HelpMnu})
+        Me.Mnu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.FileMnu, Me.ViewMnu, Me.HelpMnu})
         '
         'FileMnu
         '
@@ -77,9 +79,20 @@ Partial Class Main
         Me.ExitApplication.Index = 3
         Me.ExitApplication.Text = "Exit"
         '
+        'ViewMnu
+        '
+        Me.ViewMnu.Index = 1
+        Me.ViewMnu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.Filenames})
+        Me.ViewMnu.Text = "View"
+        '
+        'Filenames
+        '
+        Me.Filenames.Index = 0
+        Me.Filenames.Text = "Filenames"
+        '
         'HelpMnu
         '
-        Me.HelpMnu.Index = 1
+        Me.HelpMnu.Index = 2
         Me.HelpMnu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.About})
         Me.HelpMnu.Text = "Help"
         '
@@ -100,10 +113,9 @@ Partial Class Main
         Me.List.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.List.Name = "List"
         Me.List.Size = New System.Drawing.Size(696, 380)
-        Me.List.SmallImageList = Me.Img
         Me.List.TabIndex = 0
+        Me.List.TileSize = New System.Drawing.Size(200, 150)
         Me.List.UseCompatibleStateImageBehavior = False
-        Me.List.View = System.Windows.Forms.View.SmallIcon
         '
         'Context
         '
@@ -143,5 +155,7 @@ Partial Class Main
     Friend WithEvents FileMnu As System.Windows.Forms.MenuItem
     Friend WithEvents FileSep As System.Windows.Forms.MenuItem
     Friend WithEvents ExitApplication As System.Windows.Forms.MenuItem
+    Friend WithEvents ViewMnu As System.Windows.Forms.MenuItem
+    Friend WithEvents Filenames As System.Windows.Forms.MenuItem
 
 End Class
