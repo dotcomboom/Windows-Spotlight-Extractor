@@ -41,7 +41,7 @@
         updateConfig()
     End Sub
 
-    Private Sub MenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Extract.Click
+    Private Sub Extract_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Extract.Click, CopyCon.Click
         If Browser.ShowDialog = Windows.Forms.DialogResult.OK Then
             For Each file As ListViewItem In List.SelectedItems
                 My.Computer.FileSystem.CopyFile(file.Tag, Browser.SelectedPath & "\" & System.IO.Path.GetFileNameWithoutExtension(path & file.Text) & ".jpg")
